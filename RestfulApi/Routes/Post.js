@@ -5,11 +5,6 @@ router.get("/", (req, res) => {
   res.send("homepage");
 });
 
-
-
-
-
-
 router.get("/get", async (req, res) => {
   try {
     const posts = await Post.find();
@@ -44,7 +39,7 @@ router.get("/get/:username", async (req, res) => {
 });
 
 //Delete post
-router.delete("/:username", async (req, res) => {
+router.delete("/delete/:username", async (req, res) => {
   try {
     const removedPost = await Post.remove({ username: req.params.username });
     res.json(removedPost);
@@ -53,16 +48,19 @@ router.delete("/:username", async (req, res) => {
   }
 });
 
-
 // Upadte
-router.patch('/patch/:username', async(req,res)=>{
-try {    const updatePost =await Post.updateOne({username:req.params.username},{
-    $set:{password:req.body.patch}
+router.patch("/patch/:username", async (req, res) => {
+  try {
+    const updatePost = await Post.updateOne(
+      { username: req.params.username },
+      {
+        $set: { password: req.body.patch },
+      }
+    );
+    res.json(updatePost);
+  } catch (err) {
+    res.json({ message: err });
+  }
 });
-    res.json(updatePost)}
-    catch(err){
-        res.json({message:err});
-    }
-})
 
 module.exports = router;
